@@ -9,6 +9,23 @@ organization and current lack of internal coherence. I may address that
 at some point in the future, but it currently isn't a high priority for
 me, where a successful extraction was.
 
+## Using the modules
+
+There are a few key modules with `using` macros:
+
+- `Belial.Schema` - adds a number of useful defaults to each ecto schema
+- `Belial.MultiSchemaContext` - this one adds default CRUD actions etc.
+- `Belial.Web.Controllers.Admin` - adds admin controller and view actions for a given
+  Belial compliant context
+- `Belial.Web.Controllers.Api` - adds REST controller support with JSON rendering
+  for a given Belial compliant context
+- `Belial.Web.Absinthe.Schema` - adds a sane set of default schema supports for an Absinthe
+  implementation
+- `Belial.Web.Absinthe.Notation` - adds GraphqQL support for an individual schema, including
+  basic CRUD actions
+- `Belial.Web.Absinthe.FieldTypeMapperHelper` - assists in mapping ecto to absinthe types,
+  including custom, appropriately
+
 ## Installation
 
 Currently only available via GitHub install.
@@ -113,6 +130,9 @@ Remove SingularContext, and rename MultipleContext to Context?
 Add a default mapping for utc datetime?
 
 ### For other contributors/future
+
+Add belial multiple context callbacks to allow compliant APIs with some compiler
+help.
 
 Do the JS includes for admin search the cool way that phx does?
 

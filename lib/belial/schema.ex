@@ -18,6 +18,22 @@ defmodule Belial.Schema do
 
   Also create dynamically creates a MyApp.Context.Schema.Query
   module and scopes/query definitinos for `with_x` and `by_x`.
+
+  Example usage:
+
+  defmodule MyApp.Schema do
+    defmacro __using__(_) do
+      quote do
+        alias MyApp.Repo
+        use Belial.Schema
+        @impl true
+        def __test_factory(), do: MyApp.Factory
+
+        @impl true
+        def __test_repo(), do: MyApp.Repo
+      end
+    end
+  end
   """
 
   @callback changeset(Ecto.Schema.t(), map) :: Ecto.Changeset.t()

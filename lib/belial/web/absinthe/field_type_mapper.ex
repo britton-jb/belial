@@ -1,6 +1,23 @@
 defprotocol Belial.Web.Absinthe.FieldTypeMapper do
   @doc """
   Field type mapper for elixir to Absinthe field types.
+
+  Example usage:
+
+  defmodule MyApp.Belial.FieldTypeMapper do
+    use Belial.Web.Absinthe.FieldTypeMapperHelper
+
+    def mapping do
+      [
+        {MyApp.Image.Type, :string},
+        {MyApp.VideoFile.Type, :string},
+        {MyApp.CustomEctoEnum, :string},
+        {:utc_datetime, :string},
+        {:map, :string}
+      ]
+    end
+  end
+
   """
   def convert_type(type)
 end
