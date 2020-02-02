@@ -1,5 +1,9 @@
 # Belial
 
+This library is a random assortments of boilerplate removers or
+other pieces of standardization I like in my Elixir apps. I'd actively
+advise other folks to stear clear.
+
 ## Installation
 
 Currently only available via GitHub install.
