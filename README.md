@@ -4,6 +4,11 @@ This library is a random assortments of boilerplate removers or
 other pieces of standardization I like in my Elixir apps. I'd actively
 advise other folks to stear clear.
 
+It was also pulled out of an existing project, and shows in some of it's
+organization and current lack of internal coherence. I may address that
+at some point in the future, but it currently isn't a high priority for
+me, where a successful extraction was.
+
 ## Installation
 
 Currently only available via GitHub install.
