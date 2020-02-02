@@ -1,0 +1,17 @@
+<%= form_for @changeset, @action, fn f -> %>
+<%= if @changeset.action do %>
+<div class="alert alert-danger">
+  <p>Oops, something went wrong! Please check the errors below.</p>
+</div>
+<% end %>
+
+<%= for field_atom <- Belial.Web.Views.AdminView.fields_to_render(@schema) do %>
+<%= label f, field_atom %>
+<%= Belial.Web.Views.AdminView.form_field_mapper(f, @schema, field_atom) %>
+<%= error_tag f, field_atom %>
+<% end %>
+
+<div>
+  <%= submit "Save" %>
+</div>
+<% end %>

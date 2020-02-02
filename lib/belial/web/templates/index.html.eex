@@ -1,0 +1,46 @@
+<h1>
+  Listing <%= @schema %>
+</h1>
+
+<%= link "New", to: apply(Belial.Web.Views.AdminView.routes(), :"#{Belial.Schema.get_singular(@schema)}_path", [@conn, :new]) %>
+
+<%= unless is_nil(@render_search) do %>
+<%= live_render(@conn, Belial.Web.Live.SearchLive, session: %{"context" => @context, "schema" => @schema, "search_fields" => @render_search}) %>
+<% end %>
+
+<%= pagination_links @page %>
+
+<table>
+  <thead>
+    <tr>
+      <%= for field <- @schema.__schema__(:fields) do %>
+      <th>
+        <%= field |> Atom.to_string() |> String.capitalize() %>
+      </th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for resource <- @page.entries do %>
+    <tr>
+      <%= for field <- @schema.__schema__(:fields) do %>
+      <td>
+        <%= if field == Belial.Schema.get_primary_key(@schema) do %>
+        <%= link Map.get(resource, field), to: apply(Belial.Web.Views.AdminView.routes(), :"#{Belial.Schema.get_singular(@schema)}_path", [@conn, :show, resource]) %>
+        <% else %>
+        <%= Map.get(resource, field) %>
+        <% end %>
+      </td>
+      <% end %>
+      <td>
+        <%= link "Edit", to: apply(Belial.Web.Views.AdminView.routes(), :"#{Belial.Schema.get_singular(@schema)}_path", [@conn, :edit, resource]) %>
+      </td>
+      <td>
+        <%= link "Delete", to: apply(Belial.Web.Views.AdminView.routes(), :"#{Belial.Schema.get_singular(@schema)}_path", [@conn, :delete, resource]), method: :delete, data: [confirm: "Are you sure?"] %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= pagination_links @page %>

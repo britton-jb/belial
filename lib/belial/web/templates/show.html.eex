@@ -1,0 +1,72 @@
+<h1><%= @schema %></h1>
+
+<span>
+  <%= link "Index", to: apply(Belial.Web.Views.AdminView.routes(), :"#{Belial.Schema.get_singular(@schema)}_path", [@conn, :index]), class: "button" %>
+</span>
+
+<%= Belial.Web.Views.AdminView.render("edit_and_delete_buttons.html", Map.put(@conn.assigns, :conn, @conn)) %>
+
+<h2>Fields</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= for field <- @schema.__schema__(:fields) do %>
+    <tr>
+      <td>
+        <strong><%= field |> Atom.to_string() |> String.capitalize() %></strong>
+      </td>
+      <td>
+        <%= Map.get(@resource, field) %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>Associations</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Association Type</th>
+      <th>Association Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for assoc_atom <- @schema.__schema__(:associations) do %>
+    <tr>
+      <td>
+        <strong><%= assoc_atom |> Atom.to_string() |> String.capitalize() %></strong>
+      </td>
+      <td>
+        <%= if Ecto.Association.BelongsTo == @schema.__schema__(:association, assoc_atom).__struct__ do %>
+        <%= Belial.Web.Views.AdminView.belongs_to_link(@conn, @schema, @resource, assoc_atom) %>
+        <% end %>
+
+        <%= if Ecto.Association.Has == @schema.__schema__(:association, assoc_atom).__struct__ do %>
+        <%= Belial.Web.Views.AdminView.has_link(@conn, @schema, @resource, assoc_atom) %>
+        <% end %>
+
+        <%= if Ecto.Association.ManyToMany == @schema.__schema__(:association, assoc_atom).__struct__ do %>
+        Admin tooling for many to many routing not yet defined
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= Belial.Web.Views.AdminView.render("edit_and_delete_buttons.html", Map.put(@conn.assigns, :conn, @conn)) %>
+
+<br />
+
+<span>
+  <%= link "Index", to: apply(Belial.Web.Views.AdminView.routes(), :"#{Belial.Schema.get_singular(@schema)}_path", [@conn, :index]), class: "button" %>
+</span>

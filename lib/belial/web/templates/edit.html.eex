@@ -1,0 +1,7 @@
+<h1>Edit <%= @schema %></h1>
+
+<%= render "form.html", Map.put(assigns, :action, apply(Belial.Web.Views.AdminView.routes(), :"#{Belial.Schema.get_singular(@schema)}_path", [@conn, :update, @resource])) %>
+
+<span>
+  <%= link "Show", to: apply(Belial.Web.Views.AdminView.routes(), :"#{Belial.Schema.get_singular(@schema)}_path", [@conn, :show, @resource]) %>
+</span>

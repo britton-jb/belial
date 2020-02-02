@@ -1,0 +1,7 @@
+<span>
+  <%= link "Edit", to: apply(Belial.Web.Views.AdminView.routes(), :"#{Belial.Schema.get_singular(@schema)}_path", [@conn, :edit, @resource]), class: "button" %>
+</span>
+
+<span>
+  <%= link "Delete", to: apply(Belial.Web.Views.AdminView.routes(), :"#{Belial.Schema.get_singular(@schema)}_path", [@conn, :delete, @resource]), method: :delete, data: [confirm: "Are you sure?"], class: "button" %>
+</span>
