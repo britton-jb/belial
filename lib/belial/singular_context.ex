@@ -38,7 +38,7 @@ defmodule Belial.SingularContext do
   @optional_callbacks data: 0, query: 2
 
   defmacro __using__(opts) do
-    schema = Macro.expand(Keyword.get(opts, :schema), __CALLER__)
+    schema = Macro.expand(Keyword.fetch!(opts, :schema), __CALLER__)
 
     read_repo =
       Macro.expand(Keyword.get(opts, :read_repo), __CALLER__) ||
@@ -48,11 +48,7 @@ defmodule Belial.SingularContext do
       Macro.expand(Keyword.get(opts, :write_repo), __CALLER__) ||
         Macro.expand(Keyword.get(opts, :repo), __CALLER__)
 
-    if is_nil(schema) do
-      raise(Belial.CompileTimeError, "#{__MODULE__} __using__ requires a :schema")
-    end
-
-    if is_nil(read_repo) do
+        if is_nil(read_repo) do
       raise(Belial.CompileTimeError, "#{__MODULE__} __using__ requires a :repo")
     end
 

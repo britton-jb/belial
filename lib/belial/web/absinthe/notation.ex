@@ -4,20 +4,6 @@ defmodule Belial.Web.Absinthe.Notation do
   as well as basic queries and mutations.
   """
 
-  defp compile_time_check!(context, schema, policy) do
-    if is_nil(context) do
-      raise(Belial.CompileTimeError, "#{__MODULE__} __using__ requires a :context")
-    end
-
-    if is_nil(schema) do
-      raise(Belial.CompileTimeError, "#{__MODULE__} __using__ requires a :schema")
-    end
-
-    if is_nil(policy) do
-      raise(Belial.CompileTimeError, "#{__MODULE__} __using__ requires a :policy")
-    end
-  end
-
   @spec input_fields(module) :: [atom]
   def input_fields(schema) do
     primary_key = Belial.Schema.get_primary_key(schema)
@@ -94,11 +80,9 @@ defmodule Belial.Web.Absinthe.Notation do
   end
 
   defmacro __using__(opts) do
-    context = Macro.expand(Keyword.get(opts, :context), __CALLER__)
-    schema = Macro.expand(Keyword.get(opts, :schema), __CALLER__)
-    policy = Macro.expand(Keyword.get(opts, :policy), __CALLER__)
-
-    compile_time_check!(context, schema, policy)
+    context = Macro.expand(Keyword.fetch!(opts, :context), __CALLER__)
+    schema = Macro.expand(Keyword.fetch!(opts, :schema), __CALLER__)
+    policy = Macro.expand(Keyword.fetch!(opts, :policy), __CALLER__)
 
     singular = Belial.Schema.get_singular(schema)
     plural = Belial.Schema.get_plural(schema)

@@ -3,7 +3,7 @@ defmodule Belial.Web.Plugs.AuthorizeResource do
 
   def call(conn, opts) do
     user = conn.assigns.current_user
-    policy = Keyword.get(opts, :policy)
+    policy = Keyword.fetch!(opts, :policy)
     action = Phoenix.Controller.action_name(conn)
     resource = conn.assigns.resource
 

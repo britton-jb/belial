@@ -2,11 +2,7 @@ defmodule Belial.Query do
   import Ecto.Query, warn: false
 
   defmacro __using__(opts) do
-    schema = Macro.expand(Keyword.get(opts, :schema), __CALLER__)
-
-    if is_nil(schema) do
-      raise(Belial.CompileTimeError, "#{__MODULE__} __using__ requires a :schema")
-    end
+    schema = Macro.expand(Keyword.fetch!(opts, :schema), __CALLER__)
 
     assoc_list =
       Enum.map(schema.__schema__(:associations), fn association_atom ->

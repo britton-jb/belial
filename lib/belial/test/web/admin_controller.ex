@@ -4,17 +4,9 @@ defmodule Belial.Test.Web.AdminController do
   defmacro test(schema, actions \\ @actions) do
     schema = Macro.expand(schema, __CALLER__)
     routes_tuple = Enum.find(__CALLER__.aliases, fn alyas -> {Routes, _} = alyas end)
-
-    if is_nil(routes_tuple) do
-      raise(
-        Belial.CompileTimeError,
-        "#{__MODULE__} requires the caller alias a Routes helper as `Routes`"
-      )
-    end
-
+    {_, routes} = routes_tuple
     schema = Macro.expand(schema, __CALLER__)
     singular = Belial.Schema.get_singular(schema)
-    {_, routes} = routes_tuple
 
     quote location: :keep do
       if Enum.member?(unquote(actions), :index) do

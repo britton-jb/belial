@@ -27,30 +27,6 @@ defmodule Belial.Web.Controllers.Admin do
   delete/2
   """
 
-  defp compile_time_check!(context, schema, layout, routes_tuple) do
-    if is_nil(context) do
-      raise(Belial.CompileTimeError, "#{__MODULE__} __using__ requires a :context")
-    end
-
-    if is_nil(schema) do
-      raise(Belial.CompileTimeError, "#{__MODULE__} __using__ requires a :schema")
-    end
-
-    if is_nil(layout) do
-      raise(
-        Belial.CompileTimeError,
-        "#{__MODULE__} __using__ requires a :layout tuple as required by Phoenix.Controller.put_layout/2"
-      )
-    end
-
-    if is_nil(routes_tuple) do
-      raise(
-        Belial.CompileTimeError,
-        "#{__MODULE__} requires the caller alias a Routes helper as `Routes`"
-      )
-    end
-  end
-
   defp search_opts(schema, opts) do
     case {function_exported?(schema, :__search_field, 0), search_opt = Keyword.get(opts, :search)} do
       {false, nil} -> nil
@@ -68,13 +44,10 @@ defmodule Belial.Web.Controllers.Admin do
   end
 
   defmacro __using__(opts) do
-    context = Macro.expand(Keyword.get(opts, :context), __CALLER__)
-    schema = Macro.expand(Keyword.get(opts, :schema), __CALLER__)
-    layout = Macro.expand(Keyword.get(opts, :layout), __CALLER__)
+    context = Macro.expand(Keyword.fetch!(opts, :context), __CALLER__)
+    schema = Macro.expand(Keyword.fetch!(opts, :schema), __CALLER__)
+    layout = Macro.expand(Keyword.fetch!(opts, :layout), __CALLER__)
     routes_tuple = Enum.find(__CALLER__.aliases, fn alyas -> {Routes, _} = alyas end)
-
-    compile_time_check!(context, schema, layout, routes_tuple)
-
     {_, routes} = routes_tuple
     policy = Macro.expand(Keyword.get(opts, :policy), __CALLER__)
     view = Macro.expand(Keyword.get(opts, :view), __CALLER__) || Belial.Web.Views.AdminView

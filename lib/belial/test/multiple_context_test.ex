@@ -15,8 +15,7 @@ defmodule Belial.Test.MultipleContext do
 
   @spec test(module, options(), [ContextFuntions.t()]) :: Macro.t()
   def test(context, opts, functions \\ @functions) do
-    schema = Keyword.get(opts, :schema)
-    if is_nil(schema), do: raise("#{__MODULE__} requires a :schema option")
+    schema = Keyword.fetch!(opts, :schema)
     singular = Belial.Schema.get_singular(schema)
     plural = Belial.Schema.get_plural(schema)
 

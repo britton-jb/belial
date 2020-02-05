@@ -41,11 +41,7 @@ defmodule Belial.MultiSchemaContext do
     search_query_where_ilike(queryable, [search_field], search_value)
   end
 
-  defp compile_time_check!(schema, read_repo) do
-    if is_nil(schema) do
-      raise(Belial.CompileTimeError, "#{__MODULE__} __using__ requires a :schema")
-    end
-
+  defp compile_time_check!(read_repo) do
     if is_nil(read_repo) do
       raise(Belial.CompileTimeError, "#{__MODULE__} __using__ requires a :repo")
     end
@@ -60,8 +56,8 @@ defmodule Belial.MultiSchemaContext do
   end
 
   defmacro __using__(opts) do
-    schema = Macro.expand(Keyword.get(opts, :schema), __CALLER__)
-    delegate = Macro.expand(Keyword.get(opts, :delegate), __CALLER__)
+    schema = Macro.expand(Keyword.fetch!(opts, :schema), __CALLER__)
+    delegate = Macro.expand(Keyword.fetch!(opts, :delegate), __CALLER__)
 
     read_repo =
       Macro.expand(Keyword.get(opts, :read_repo), __CALLER__) ||
@@ -71,7 +67,7 @@ defmodule Belial.MultiSchemaContext do
       Macro.expand(Keyword.get(opts, :write_repo), __CALLER__) ||
         Macro.expand(Keyword.get(opts, :repo), __CALLER__)
 
-    compile_time_check!(schema, read_repo)
+    compile_time_check!(read_repo)
 
     absinthe? = Keyword.get(opts, :absinthe?, false)
     singular = Belial.Schema.get_singular(schema)

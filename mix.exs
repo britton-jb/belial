@@ -35,10 +35,8 @@ defmodule Belial.MixProject do
       {:speakeasy, "~> 0.3.0"},
       {:scrivener, "~> 2.0"},
       {:scrivener_ecto, "~> 2.0"},
-      {:scrivener_html, "~> 1.8"}
-
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+      {:scrivener_html, "~> 1.8"},
+      {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false}
     ]
   end
 end
