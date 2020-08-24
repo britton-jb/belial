@@ -14,7 +14,7 @@ defmodule Belial.Query do
             from(
               record in query,
               left_join: association in assoc(record, unquote(association_atom)),
-              preload: unquote(association_atom)
+              preload: [{unquote(association_atom), association}]
             )
           end
 
